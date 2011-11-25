@@ -1,0 +1,26 @@
+###############################################################################
+package org.jahia.modules.docrules.rules
+
+#list any import classes here.
+import org.jahia.services.content.rules.*
+import org.slf4j.Logger
+
+expander rules.dsl
+
+#declare any global variables here
+global User user
+global Service service
+global Logger logger
+global DocumentRulesRuleService documentRulesService
+###############################################################################
+
+rule "Document is uploaded or changed in the folder with rules defined"
+    when
+		A file content has been modified
+            - the parent has document rules defined
+> or
+    	A file has been moved
+            - the parent has document rules defined
+    then
+        Execute document rules on node
+end
