@@ -1,0 +1,11 @@
+
+/.project
+/war/.classpath
+/war/.project
+/service/.classpath
+/service/.project
+/service/target
+/service/.settings
+/.settings
+/war/.settings
+/war/target
