@@ -18,3 +18,16 @@
  itemtype = rules
  - j:documentRuleTags (string) indexed=no
 
+[jmix:documentRuleAutoPublish] > jmix:applyDocumentRules mixin
+ extends = jnt:folder
+ itemtype = rules
+ - j:documentRuleAutoPublishEnabled (boolean) = true autocreated
+
+
+[jmix:documentRuleEmail] > jmix:applyDocumentRules mixin
+ extends = jnt:folder
+ itemtype = rules
+ - j:documentRuleTo (weakreference,picker[type='group']) < jnt:group
+ - j:documentRuleSubject (string) indexed=no
+ - j:documentRuleBody (string,textarea) indexed=no
+

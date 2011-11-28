@@ -34,6 +34,34 @@
         <property name="taggingService" ref="org.jahia.services.tags.TaggingService"/>
     </bean>
     
+    <bean id="documentRuleAutoPublish" class="org.jahia.modules.docrules.AutoPublishDocumentRule"/>
+    
+    <bean id="documentRuleEmail" class="org.jahia.modules.docrules.EmailDocumentRule">
+        <property name="mailService" ref="MailService"/>
+        <property name="groupManagerService" ref="JahiaGroupManagerService"/>
+        <property name="subject" value="Document notification: ${document.parent.name}/${document.name}"/>
+        <property name="body">
+            <value><![CDATA[<html>
+            <head>
+            <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+            <title>Document update</title>
+            </head>
+            <body>
+            <h2>Document uploaded/updated</h2>
+            <p>
+            <strong>File: </strong><a href="http://localhost:8080${document.url}">${document.name}</a><br/>
+            <strong>Folder: </strong>${document.parent.path}<br/>
+            <strong>Created: </strong>${document.propertiesAsString.get("jcr:created")}<br/>
+            <strong>Created by: </strong>${document.propertiesAsString.get("jcr:createdBy")}<br/>
+            <strong>Modified: </strong>${document.propertiesAsString.get("jcr:lastModified")}<br/>
+            <strong>Modified by: </strong>${document.propertiesAsString.get("jcr:lastModifiedBy")}<br/>
+            </p>
+            <p>With best regards<br/>Portal Team</p>
+            </body>
+            </html>]]></value>
+        </property>
+    </bean>
+    
     <bean id="Engine.Tab.Rules" class="org.jahia.services.uicomponents.bean.editmode.EngineTab">
         <property name="id" value="rules"/>
         <property name="titleKey" value="label.engineTab.rules@modules.dam-doc-rules.resources.JahiaDocumentRules"/>
@@ -49,6 +77,53 @@
                     </list>
                 </property>
             </bean>
+        </property>
+    </bean>
+    
+    <bean id="grouppicker" parent="abstractmanager">
+        <property name="nodeTypes" value="jnt:group"/>
+
+        <property name="folderTypes">
+            <list>
+                <value>jnt:virtualsite</value>
+                <value>jnt:groupsFolder</value>
+            </list>
+        </property>
+
+        <property name="toolbars">
+            <bean class="org.jahia.services.uicomponents.bean.toolbar.Toolbar">
+                <property name="items">
+                    <list/>
+                </property>
+            </bean>
+        </property>
+        <property name="contextMenu">
+            <bean class="org.jahia.services.uicomponents.bean.toolbar.Toolbar">
+                <property name="items">
+                    <list/>
+                </property>
+            </bean>
+        </property>
+        <property name="displaySearchInPage" value="false"/>
+        <property name="displaySearchInContent" value="false"/>
+        <property name="displaySearchInFile" value="false"/>
+        <property name="displaySearchInTag" value="true"/>
+        <property name="searchInContent" value="true"/>
+        <property name="searchInFile" value="false"/>
+        <property name="allowsMultipleSelection" value="false"/>
+        <!-- accordion panels-->
+        <property name="repositories">
+            <list>
+                <ref bean="repository.groups"/>
+            </list>
+        </property>
+
+        <!-- table columns-->
+        <property name="tableColumns">
+            <list value-type="org.jahia.services.uicomponents.bean.contentmanager.Column">
+                <value>icon,40,empty</value>
+                <value>name,*,label.name</value>
+            </list>
         </property>
     </bean>
     

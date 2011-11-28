@@ -41,56 +41,23 @@ package org.jahia.modules.docrules;
 
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.lang.StringUtils;
 import org.jahia.services.content.JCRNodeWrapper;
-import org.jahia.services.content.decorator.JCRSiteNode;
-import org.jahia.services.tags.TaggingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Document rule that does the tagging of the document with provided tags.
+ * Document rule that automatically publishes the node to live workspace on creation or on update.
  * 
  * @author Sergiy Shyrkov
  */
-public class TaggingDocumentRule implements DocumentRule {
-
-    private static final Logger logger = LoggerFactory.getLogger(TaggingDocumentRule.class);
-
-    private TaggingService taggingService;
+public class AutoPublishDocumentRule implements DocumentRule {
 
     public void execute(JCRNodeWrapper document) throws RepositoryException {
-        JCRNodeWrapper folder = document.getParent();
-        String[] tags = null;
-        if (folder.hasProperty("j:documentRuleTags")) {
-            tags = StringUtils.split(folder.getProperty("j:documentRuleTags").getString(), " ,;");
+        if (!document.isNodeType("jmix:autoPublish")) {
+            document.addMixin("jmix:autoPublish");
         }
-
-        if (tags == null || tags.length == 0) {
-            logger.info("No tags specifed for the document rule on the parent folder {}."
-                    + " Skip executing rules on node {}", folder.getPath(), document.getPath());
-            return;
-        }
-
-        // workaround for http://jira.jahia.org/browse/QA-3179
-        if (!document.isNodeType("jmix:tagged")) {
-            document.addMixin("jmix:tagged");
-        }
-
-        JCRSiteNode resolveSite = document.getResolveSite();
-
-        taggingService.tag(document.getPath(), StringUtils.join(tags, ","),
-                resolveSite != null ? resolveSite.getName() : "systemsite", true,
-                document.getSession());
-
     }
 
     public boolean isApplicable(JCRNodeWrapper document) {
         return true;
-    }
-
-    public void setTaggingService(TaggingService taggingService) {
-        this.taggingService = taggingService;
     }
 
 }
