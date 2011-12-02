@@ -72,11 +72,6 @@ public class TaggingDocumentRule implements DocumentRule {
             return;
         }
 
-        // workaround for http://jira.jahia.org/browse/QA-3179
-        if (!document.isNodeType("jmix:tagged")) {
-            document.addMixin("jmix:tagged");
-        }
-
         JCRSiteNode resolveSite = document.getResolveSite();
 
         taggingService.tag(document.getPath(), StringUtils.join(tags, ","),
