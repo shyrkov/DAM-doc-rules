@@ -46,7 +46,7 @@
     <parent>
         <artifactId>dam-doc-rules-root</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <artifactId>dam-doc-rules</artifactId>
     <name>Jahia Document Rules</name>
