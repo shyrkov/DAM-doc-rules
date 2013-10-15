@@ -39,7 +39,7 @@
     <bean id="documentRuleEmail" class="org.jahia.modules.docrules.EmailDocumentRule">
         <property name="mailService" ref="MailService"/>
         <property name="groupManagerService" ref="JahiaGroupManagerService"/>
-        <property name="subject" value="Document notification: ${document.parent.name}/${document.name}"/>
+        <property name="subject" value="Document notification: #{'$'}{document.parent.name}/#{'$'}{document.name}"/>
         <property name="body">
             <value><![CDATA[<html>
             <head>
@@ -49,12 +49,12 @@
             <body>
             <h2>Document uploaded/updated</h2>
             <p>
-            <strong>File: </strong><a href="http://localhost:8080${document.url}">${document.name}</a><br/>
-            <strong>Folder: </strong>${document.parent.path}<br/>
-            <strong>Created: </strong>${document.propertiesAsString.get("jcr:created")}<br/>
-            <strong>Created by: </strong>${document.propertiesAsString.get("jcr:createdBy")}<br/>
-            <strong>Modified: </strong>${document.propertiesAsString.get("jcr:lastModified")}<br/>
-            <strong>Modified by: </strong>${document.propertiesAsString.get("jcr:lastModifiedBy")}<br/>
+            <strong>File: </strong><a href="http://localhost:8080#{'$'}{document.url}">#{'$'}{document.name}</a><br/>
+            <strong>Folder: </strong>#{'$'}{document.parent.path}<br/>
+            <strong>Created: </strong>#{'$'}{document.propertiesAsString.get("jcr:created")}<br/>
+            <strong>Created by: </strong>#{'$'}{document.propertiesAsString.get("jcr:createdBy")}<br/>
+            <strong>Modified: </strong>#{'$'}{document.propertiesAsString.get("jcr:lastModified")}<br/>
+            <strong>Modified by: </strong>#{'$'}{document.propertiesAsString.get("jcr:lastModifiedBy")}<br/>
             </p>
             <p>With best regards<br/>Portal Team</p>
             </body>
